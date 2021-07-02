@@ -5,3 +5,7 @@ p {
 p {
   color: blue;
 }
+
+ul#nav li.active p, li.active a {
+  color: green;
+}

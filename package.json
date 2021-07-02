@@ -7,7 +7,9 @@
     "start": "npm run -s build && node dist/index.js",
     "build": "tsc && chmod +x dist/index.js",
     "build-test": "tsc -p tsconfig-test.json",
-    "test": "npm run -s build && npm run -s build-test && jasmine --config=jasmine.json"
+    "test": "npm run -s build && npm run -s build-test && jasmine --config=jasmine.json",
+    "test-debug": "npm run -s build && npm run -s build-test && ndb jasmine --config=jasmine.json",
+    "serve": "http-server site/ -p 8001"
   },
   "author": "Douglas Parker",
   "license": "MIT",
@@ -18,9 +20,11 @@
     "@types/puppeteer": "^5.4.3",
     "http-server": "^0.12.3",
     "jasmine": "^3.7.0",
+    "ndb": "^1.1.5",
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "puppeteer": "^10.1.0"
+    "puppeteer": "^10.1.0",
+    "specificity": "^0.4.1"
   }
 }

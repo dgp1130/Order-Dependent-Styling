@@ -27,12 +27,9 @@ async function exec(path: string): Promise<ProcessResult> {
       stdout,
       stderr,
     };
-  } catch (error) {
-    console.log(process.cwd());
-    console.error(error);
-    const err = error as ProcessResult & Error;
+  } catch (err) {
     return {
-      status: err.status,
+      status: err.code,
       stdout: err.stdout,
       stderr: err.stderr,
     };
@@ -49,15 +46,24 @@ describe('Dependent Styling', () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     server.close();
   });
 
   it('detects order dependent styling', async () => {
     const { status, stdout, stderr } = await exec('/simple.html');
 
-    expect(status).toBe(0);
-    expect(stdout).toBe('Simple\n');
-    expect(stderr).toBe('');
+    expect(status).toBe(1);
+    expect(stdout).toBe('');
+    expect(stderr).toBe(`
+Conflict, multiple selectors set \`color\` with the specificity \`0-0-0-1\` and are order-dependent as a result:
+Selector: p
+URL: http://localhost:8000/simple.css
+Span: Line 0, column 0 - line 0, column 1
+
+Selector: p
+URL: http://localhost:8000/simple.css
+Span: Line 4, column 0 - line 4, column 1
+    `.trim() + '\n');
   });
 });
